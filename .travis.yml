@@ -1,4 +1,26 @@
+
+sudo: required
 language: java
 
 jdk:
   - oraclejdk7
+
+
+script:
+  - mvn clean cobertura:cobertura -Dtest=CustomSchemaReadTest#initializationError -DfailIfNoTests=false
+
+before_deploy:
+- tar -zcvf coverage-result.tar.gz /home/travis/build/leusonmario/jackson-module-jsonSchema/target/site/cobertura
+
+deploy:
+  provider: releases
+  api_key:
+    secure: "heVT3pTvKcpuDD4PGC85ATirfd1ytcVoKvKAze0fYJQPodGqY31qz+F7PqxyX+lmJa8/fXiADbzWILZy74D+2g2ls0uYMYPrVKOkiitSSH2bD5MrKVbh/O0NbQvH7QwGWj6abHsRDTPVVpbfYReOkDcv8i0epXmsikCRsPAdL2eblxl1RGEo4CpwC5hm2B3xvBunikUP8lmIuPAg13q7gVGztZO+iuMar3M1/Hf7839F/RSURaIWqts//iRx/plB60iu0iwnBb9fIEqQ6czU04f+smi3bpwjW/+Ur5EoBdaijrM1BZKE8opHH7Bcnxf6+yIXUna3tnJpxIz/wvs6Z3GToSGvOObvlAaERa1nCjpqI4ivy8RedLXYSj8c4FWVgILn1TekERMr/XVblHh1jGQ4P86eR3Hp/IMj4p4McvtMtyQeNEffamiu29DMc9PPWKNzDRFUrHWtKj9EhKU22q2u+EFwm6b6fhxzkxSMBgvvYaW9/kBGaN8R2AGFNag9hUwzCduoUAuq8AhXCw+y8lD6ARHvItAecdbdFgfm8QlCIEQO+/k3Ul7s+w8dXuvmvJC8BCF4Y9u3+E6jMpGSdQEw2k2WaVo7CDzL5Lef3HT6j/WVHV85PlfsRWpi/adGrOnKq0mkarQQ7a99wocZpKfx0LA5nU+bL6v1bqDqvhI="
+
+
+  file: coverage-result.tar.gz
+  file_glob: true
+  overwrite: true
+  skip_cleanup: true
+  on:
+    tags: true
