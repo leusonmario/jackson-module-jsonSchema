@@ -68,11 +68,23 @@ JSON Schema (http://tools.ietf.org/html/draft-zyp-json-schema-03) version 3 gene
         <artifactId>maven-surefire-plugin</artifactId>
         <version>${version.plugin.surefire}</version>
         <configuration>
+<testFailureIgnore>true</testFailureIgnore>
           <excludes>
             <exclude>com/fasterxml/jackson/module/jsonSchema/failing/*.java</exclude>
           </excludes>
         </configuration>
       </plugin>
-    </plugins>
+    <plugin>
+          <groupId>org.codehaus.mojo</groupId>
+          <artifactId>cobertura-maven-plugin</artifactId>
+          <version>2.7</version>
+          <configuration>
+              <format>xml</format>
+              <maxmem>256m</maxmem>
+              <!-- aggregated reports for multi-module projects -->
+              <aggregate>true</aggregate>
+          </configuration>
+         </plugin>
+        </plugins>
   </build>
 </project>
